@@ -36,5 +36,6 @@ def send():
     return redirect('/')
 
 if __name__ == '_main_':
-    app.run(debug=True, port=5000)
-app.run(debug=True, use_reloader=False)
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
