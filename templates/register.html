@@ -50,7 +50,7 @@
             color: #cbd5e0;
             font-size: 10.5pt;
         }
-        input, select {
+        input {
             width: 100%;
             padding: 12px;
             background-color: #0f172a;
@@ -61,7 +61,7 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #00f2fe;
             box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
@@ -128,14 +128,6 @@
             <div class="form-group">
                 <label for="password">Create Secure Password</label>
                 <input type="password" id="password" name="password" required placeholder="••••••••">
-            </div>
-            <div class="form-group">
-                <label for="role">System Access Role</label>
-                <select id="role" name="role">
-                    <option value="Operational Officer">Operational Officer</option>
-                    <option value="Intelligence Analyst">Intelligence Analyst</option>
-                    <option value="System Administrator">System Administrator</option>
-                </select>
             </div>
             <button type="submit" class="btn">Create Account</button>
         </form>

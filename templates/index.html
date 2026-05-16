@@ -19,7 +19,7 @@
         }
         .header-panel {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -48,8 +48,9 @@
             border-radius: 16px;
             padding: 30px;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
         }
         .stat-grid {
             display: grid;
@@ -134,6 +135,80 @@
             color: #e2e8f0;
             word-break: break-all;
         }
+        .audit-container {
+            width: 100%;
+            max-width: 650px;
+            background-color: #ffffff;
+            color: #1a202c;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .audit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .audit-title {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+        .badge-encrypted {
+            background-color: #e6fffa;
+            color: #319795;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: 600;
+        }
+        .log-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8fafc;
+        }
+        .flow-section {
+            font-size: 9.5pt;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .role-bold {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #1a202c;
+        }
+        .crypto-section {
+            background-color: #ffffff;
+            border: 1px dashed #cbd5e0;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 5px;
+        }
+        .crypto-label {
+            font-size: 8.5pt;
+            font-weight: bold;
+            color: #4a5568;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .crypto-value {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 9.5pt;
+            color: #e53e3e;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
@@ -141,7 +216,7 @@
     <div class="header-panel">
         <div class="title-area">
             <h2>Welcome, {{ username }}</h2>
-            <span style="font-size: 10pt; color: #a0aec0;">Authorized Node [Role: {{ role }}]</span>
+            <span style="font-size: 10pt; color: #a0aec0;">SAMS Cryptographic Messaging Node</span>
         </div>
         <a href="/logout" class="logout-btn">Disconnect</a>
     </div>
@@ -164,17 +239,32 @@
 
         <form action="/dashboard" method="POST">
             <div class="form-group">
+                <label>Select Your Operational Privilege (From Role)</label>
+                <select name="sender_role">
+                    <option value="Admin" {% if sender_role == 'Admin' %}selected{% endif %}>Admin</option>
+                    <option value="Dean" {% if sender_role == 'Dean' %}selected{% endif %}>Dean</option>
+                    <option value="Professor" {% if sender_role == 'Professor' %}selected{% endif %}>Professor</option>
+                    <option value="Head" {% if sender_role == 'Head' %}selected{% endif %}>Head</option>
+                    <option value="Doctor" {% if sender_role == 'Doctor' %}selected{% endif %}>Doctor</option>
+                    <option value="Dep" {% if sender_role == 'Dep' %}selected{% endif %}>Dep</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label>Target Clearance Authority (Receiver Node)</label>
                 <select name="target_authority">
-                    <option value="Central Admin Security Node" {% if target_authority == 'Central Admin Security Node' %}selected{% endif %}>Central Admin Security Node</option>
-                    <option value="Security Operations Center (SOC)" {% if target_authority == 'Security Operations Center (SOC)' %}selected{% endif %}>Security Operations Center (SOC)</option>
-                    <option value="High Clearance Authority (Level 5)" {% if target_authority == 'High Clearance Authority (Level 5)' %}selected{% endif %}>High Clearance Authority (Level 5)</option>
+                    <option value="Admin" {% if target_authority == 'Admin' %}selected{% endif %}>Admin</option>
+                    <option value="Dean" {% if target_authority == 'Dean' %}selected{% endif %}>Dean</option>
+                    <option value="Professor" {% if target_authority == 'Professor' %}selected{% endif %}>Professor</option>
+                    <option value="Head" {% if target_authority == 'Head' %}selected{% endif %}>Head</option>
+                    <option value="Doctor" {% if target_authority == 'Doctor' %}selected{% endif %}>Doctor</option>
+                    <option value="Dep" {% if target_authority == 'Dep' %}selected{% endif %}>Dep</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Confidential Payload Input (Plaintext Message)</label>
-                <textarea name="payload_input" placeholder="Inject sensitive administrative commands or logs here..." required>{{ original_text }}</textarea>
+                <textarea name="payload_input" placeholder="Inject sensitive administrative commands or grades here..." required>{{ original_text }}</textarea>
             </div>
 
             <button type="submit" class="dispatch-btn">PROCESS & CRYPTOGRAPHICALLY DISPATCH</button>
@@ -185,9 +275,36 @@
                 <div class="result-title">🔒 Encrypted Payload Output (Ciphertext)</div>
                 <div class="result-box">{{ encrypted_text }}</div>
                 <div style="margin-top: 10px; font-size: 9pt; color: #a0aec0;">
-                    Dispatched Successfully to: <strong style="color: #fff;">{{ target_authority }}</strong>
+                    Dispatched Successfully from <strong style="color: #00f2fe;">{{ sender_role }}</strong> to <strong style="color: #fff;">{{ target_authority }}</strong>
                 </div>
             </div>
+        {% endif %}
+    </div>
+
+    <div class="audit-container">
+        <div class="audit-header">
+            <h3 class="audit-title">🛡️ Secure System Audit Log</h3>
+            <span class="badge-encrypted">End-to-End Encrypted</span>
+        </div>
+
+        {% if logs %}
+            {% for log in logs %}
+            <div class="log-card">
+                <div class="flow-section">
+                    Communication Flow: <span class="role-bold">{{ log.sender_role }}</span> <span style="color: #3182ce;">➔ To Recipient:</span> <span class="role-bold">{{ log.receiver_role }}</span>
+                </div>
+                <div class="crypto-section">
+                    <div class="crypto-label">Encrypted Content (Confidentiality)</div>
+                    <div class="crypto-value">{{ log.ciphertext }}</div>
+                </div>
+                <div class="crypto-section" style="margin-top: 10px;">
+                    <div class="crypto-label">Integrity Verification (SHA-256 Hash)</div>
+                    <div class="crypto-value" style="color: #4a5568;">{{ log.msg_hash }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; color: #718096; padding: 20px;">No encrypted audit flows captured yet.</div>
         {% endif %}
     </div>
 

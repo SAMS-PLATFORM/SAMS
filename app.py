@@ -4,6 +4,16 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+try:
+    from cryptography_logic import encrypt_message, generate_hash
+except ImportError:
+    import base64
+    import hashlib
+    def encrypt_message(text):
+        return base64.b64encode(text.encode('utf-8')).decode('utf-8')
+    def generate_hash(text):
+        return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SAMS_SUPER_SECRET_KEY_2026'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sams.db'
@@ -14,9 +24,16 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
-    id = db.column(db.Integer, primary_key=True)
-    username = db.column(db.String(50), unique=True, nullable=False)
-    password = db.column(db.String(255), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+class MessageLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_role = db.Column(db.String(50), nullable=False)
+    receiver_role = db.Column(db.String(50), nullable=False)
+    ciphertext = db.Column(db.Text, nullable=False)
+    msg_hash = db.Column(db.String(64), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -25,10 +42,11 @@ def load_user(user_id):
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
-        password = request.form.get('password', '')
+        username = request.form.get('username').strip()
+        password = request.form.get('password')
         
         user = User.query.filter_by(username=username).first()
+        
         if user and check_password_hash(user.password, password):
             login_user(user)
             return redirect(url_for('dashboard'))
@@ -41,12 +59,12 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username', '').strip()
-        password = request.form.get('password', '')
+        username = request.form.get('username').strip()
+        password = request.form.get('password')
         
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            flash('Username already exists!', 'danger')
+            flash('Username already exists! Please choose another one.', 'danger')
             return redirect(url_for('register'))
         
         hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
@@ -64,22 +82,39 @@ def register():
 @login_required
 def dashboard():
     encrypted_text = ""
+    msg_hash = ""
     original_text = ""
-    target_authority = ""
+    sender_role = "Admin"
+    target_authority = "Dean"
     
     if request.method == 'POST':
         original_text = request.form.get('payload_input', '')
-        target_authority = request.form.get('target_authority', '')
+        sender_role = request.form.get('sender_role', 'Admin')
+        target_authority = request.form.get('target_authority', 'Dean')
         
         if original_text:
-            import base64
-            encrypted_text = base64.b64encode(original_text.encode('utf-8')).decode('utf-8')
+            encrypted_text = encrypt_message(original_text)
+            msg_hash = generate_hash(original_text)
             
+            new_log = MessageLog(
+                sender_role=sender_role,
+                receiver_role=target_authority,
+                ciphertext=encrypted_text,
+                msg_hash=msg_hash
+            )
+            db.session.add(new_log)
+            db.session.commit()
+            
+    active_logs = MessageLog.query.order_by(MessageLog.id.desc()).all()
+    
     return render_template('index.html', 
                            username=current_user.username, 
                            original_text=original_text,
                            encrypted_text=encrypted_text,
-                           target_authority=target_authority)
+                           msg_hash=msg_hash,
+                           sender_role=sender_role,
+                           target_authority=target_authority,
+                           logs=active_logs)
 
 @app.route('/logout')
 @login_required

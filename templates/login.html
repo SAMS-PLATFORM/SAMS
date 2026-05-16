@@ -50,7 +50,7 @@
             color: #cbd5e0;
             font-size: 10.5pt;
         }
-        input, select {
+        input {
             width: 100%;
             padding: 12px;
             background-color: #0f172a;
@@ -61,7 +61,7 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #00f2fe;
             box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
@@ -92,15 +92,6 @@
             margin-bottom: 20px;
             font-size: 10.5pt;
             border: 1px solid #e53e3e;
-        }
-        .flash-messages-success {
-            background-color: #22543d;
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 10.5pt;
-            border: 1px solid #38a169;
         }
         .link-footer {
             margin-top: 25px;
@@ -136,14 +127,6 @@
             <div class="form-group">
                 <label for="password">Verify Password</label>
                 <input type="password" id="password" name="password" required placeholder="Enter password">
-            </div>
-            <div class="form-group">
-                <label for="role">Clearance Privilege Role</label>
-                <select id="role" name="role">
-                    <option value="Operational Officer">Operational Officer</option>
-                    <option value="Intelligence Analyst">Intelligence Analyst</option>
-                    <option value="System Administrator">System Administrator</option>
-                </select>
             </div>
             <button type="submit" class="btn">Verify & Log In</button>
         </form>
