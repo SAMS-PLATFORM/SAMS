@@ -3,87 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS - Register</title>
+    <title>SAMS - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #635bff;
-            --secondary-color: #4b3eb5;
-            --bg-color: #0f0c1b;
-            --card-bg: #181528;
-            --text-color: #f3f4f6;
-            --muted-text: #9ca3af;
-            --border-color: #2e2a47;
-            --error-color: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #1f1035 0%, #08030f 100%);
+            --panel-bg: rgba(28, 14, 43, 0.7);
+            --primary-purple: #9d4edd;
+            --light-purple: #e0aaff;
+            --deep-purple: #5a189a;
+            --accent-glow: rgba(157, 78, 221, 0.2);
+            --text-main: #f3eeff;
+            --text-muted: #b3a2c7;
+            --border-purple: rgba(157, 78, 221, 0.25);
+            --danger-color: #ff4d6d;
+            --success-color: #70e000;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
-        header { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%); }
-        header h1 { color: var(--primary-color); font-size: 24px; letter-spacing: 1px; margin-bottom: 5px; }
-        header p { color: var(--muted-text); font-size: 14px; }
-        main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
-        .container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 480px; padding: 35px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
-        h2 { margin-bottom: 25px; font-weight: 600; text-align: center; font-size: 22px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--muted-text); }
-        input, select { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); font-size: 15px; }
-        input:focus, select:focus { outline: none; border-color: var(--primary-color); }
-        button { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        button:hover { background-color: var(--secondary-color); }
-        .switch-form { text-align: center; margin-top: 20px; font-size: 14px; color: var(--muted-text); }
-        .switch-form a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
-        .switch-form a:hover { text-decoration: underline; }
-        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; text-align: center; }
-        .alert-error { background-color: rgba(239, 68, 68, 0.15); color: var(--error-color); border: 1px solid var(--error-color); }
-        footer { border-top: 1px solid var(--border-color); background-color: var(--card-bg); padding: 30px 20px; text-align: center; font-size: 13px; line-height: 1.8; color: var(--muted-text); }
-        .footer-team { font-weight: 600; color: var(--text-color); margin-bottom: 5px; }
-        .footer-uni { color: var(--primary-color); font-weight: bold; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-main);
+        }
+
+        header {
+            background: rgba(13, 6, 20, 0.85);
+            border-bottom: 1px solid var(--border-purple);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--light-purple), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .header-brand .badge {
+            background: rgba(157, 78, 221, 0.15);
+            border: 1px solid var(--primary-purple);
+            color: var(--light-purple);
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .user-info strong {
+            color: var(--light-purple);
+        }
+
+        .btn-logout {
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid var(--danger-color);
+            color: #ff85a1;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            background: var(--danger-color);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.4);
+        }
+
+        .dashboard-container {
+            flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--light-purple);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(157, 78, 221, 0.15);
+            padding-bottom: 12px;
+        }
+
+        .panel-title i {
+            color: var(--primary-purple);
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: rgba(255, 77, 109, 0.15);
+            border: 1px solid var(--danger-color);
+            color: #ff85a1;
+        }
+
+        .alert-success {
+            background: rgba(112, 224, 0, 0.15);
+            border: 1px solid var(--success-color);
+            color: #9ef01a;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(13, 6, 20, 0.6);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 8px rgba(157, 78, 221, 0.2);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(13, 6, 20, 0.6);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            resize: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 8px rgba(157, 78, 221, 0.2);
+        }
+
+        .btn-encrypt {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--deep-purple), var(--primary-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(90, 24, 154, 0.3);
+        }
+
+        .btn-encrypt:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 78, 221, 0.5);
+            background: linear-gradient(90deg, var(--primary-purple), #c77dff);
+        }
+
+        .inbox-list {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 520px;
+            padding-right: 5px;
+        }
+
+        .inbox-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .inbox-list::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .inbox-list::-webkit-scrollbar-thumb {
+            background: var(--border-purple);
+            border-radius: 10px;
+        }
+
+        .msg-card {
+            background: rgba(13, 6, 20, 0.4);
+            border: 1px solid rgba(157, 78, 221, 0.15);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            position: relative;
+            transition: border-color 0.3s, transform 0.2s;
+        }
+
+        .msg-card:hover {
+            border-color: rgba(157, 78, 221, 0.4);
+            transform: scale(1.01);
+        }
+
+        .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .msg-sender {
+            font-weight: 600;
+            color: var(--light-purple);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .msg-sender i {
+            color: var(--primary-purple);
+            font-size: 0.85rem;
+        }
+
+        .msg-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .msg-body {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #f0ebf7;
+            word-break: break-word;
+            background: rgba(90, 24, 154, 0.1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-purple);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            color: rgba(157, 78, 221, 0.2);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        footer {
+            background: rgba(13, 6, 20, 0.9);
+            border-top: 1px solid var(--border-purple);
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-university {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--light-purple);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .footer-university span {
+            color: var(--primary-purple);
+        }
+
+        .footer-team {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px 25px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            margin: 5px 0;
+            padding: 10px 0;
+            border-top: 1px solid rgba(157, 78, 221, 0.1);
+            border-bottom: 1px solid rgba(157, 78, 221, 0.1);
+        }
+
+        .footer-team span i {
+            color: var(--primary-purple);
+            margin-right: 5px;
+        }
+
+        .footer-team strong {
+            color: var(--light-purple);
+        }
+
+        .footer-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-meta span i {
+            color: var(--primary-purple);
+            margin-right: 4px;
+        }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>SAMS : Secure Admin Messaging System</h1>
-        <p>Shaqra University — College of Computer and Information Technology (CCIT)</p>
+        <div class="header-brand">
+            <div class="logo">SAMS</div>
+            <span class="badge">AES-Fernet Enabled</span>
+        </div>
+        <div class="user-meta">
+            <div class="user-info">
+                <i class="fa-solid fa-user-shield" style="color: var(--primary-purple); margin-right: 6px;"></i>
+                Active Admin: <strong>{{ current_user.username }}</strong>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn-logout">
+                <i class="fa-solid fa-power-off"></i> Terminate Session
+            </a>
+        </div>
     </header>
-    <main>
-        <div class="container">
-            <h2>Account Authorization Registration</h2>
+
+    <div class="dashboard-container">
+        
+        <div class="panel">
+            <div class="panel-title">
+                <i class="fa-solid fa-paper-plane"></i> Outbound Cipher
+            </div>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="alert alert-error">{{ message|safe }}</div>
+                        <div class="alert alert-{{ category }}">
+                            <i class="fa-solid {% if category == 'danger' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}"></i>
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="{{ url_for('register') }}" method="POST">
+
+            <form action="{{ url_for('send_message') }}" method="POST">
                 <div class="form-group">
-                    <label>Full Name / Username</label>
-                    <input type="text" name="username" value="{{ prefill_user if prefill_user else '' }}" required autocomplete="username">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required autocomplete="new-password">
-                </div>
-                <div class="form-group">
-                    <label>Administrative Role (Authorization Level)</label>
-                    <select name="role" required>
-                        <option value="" disabled selected>Select your professional role...</option>
-                        <option value="Executive Management">Executive Management (Dean / Vice Dean)</option>
-                        <option value="Administrative Affairs">Administrative Affairs Department</option>
-                        <option value="Operational Security Control">Operational Security Control</option>
-                        <option value="Academic Registry">Academic Registry & Admissions</option>
+                    <label class="form-label" for="receiver">Destination Administrator</label>
+                    <select name="receiver_id" id="receiver" class="form-select" required>
+                        <option value="" disabled selected>Select Recipient Admin...</option>
+                        {% for user in users %}
+                            <option value="{{ user.id }}">admin // {{ user.username }}</option>
+                        {% endfor %}
                     </select>
                 </div>
-                <button type="submit">Create Account</button>
+                <div class="form-group">
+                    <label class="form-label" for="message">Plaintext Payload</label>
+                    <textarea name="message" id="message" class="form-textarea" rows="6" placeholder="Enter sensitive intelligence statement to encrypt and route..." required></textarea>
+                </div>
+                <button type="submit" class="btn-encrypt">
+                    <i class="fa-solid fa-lock"></i> Encrypt & Dispatch
+                </button>
             </form>
-            <div class="switch-form">
-                Already registered? <a href="{{ url_for('login') }}">Log In here</a>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">
+                <i class="fa-solid fa-vault"></i> Decrypted Vault Inbox
+            </div>
+            
+            <div class="inbox-list">
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="msg-card">
+                            <div class="msg-header">
+                                <span class="msg-sender">
+                                    <i class="fa-solid fa-key"></i> From: {{ msg.sender }}
+                                </span>
+                                <span class="msg-time">
+                                    <i class="fa-regular fa-clock"></i> {{ msg.timestamp }}
+                                </span>
+                            </div>
+                            <div class="msg-body">
+                                {{ msg.content }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fa-solid fa-folder-open"></i>
+                        No operational payloads routed to this cryptographic terminal yet.
+                    </div>
+                {% endif %}
             </div>
         </div>
-    </main>
+
+    </div>
+
     <footer>
-        <div class="footer-team">Project Team: Taleen Alammar — Sarah Alshabib — Aseel Alsnaidi — Danah Aljammaz</div>
-        <div>Supervised by: Dr. Dimah Almani</div>
-        <div class="footer-uni">Shaqra University | Information Security Capstone Project | CCIT</div>
+        <div class="footer-content">
+            <div class="footer-university">
+                Shaqra University // <span>Information Security Project</span> // CCIT
+            </div>
+            <div class="footer-team">
+                <span><i class="fa-solid fa-users"></i> Project Team: <strong>Taleen Alammar, Sarah Alshabib, Aseel Alsnaidi, Danah Aljammaz</strong></span>
+                <span><i class="fa-solid fa-graduation-cap"></i> Supervised by: <strong>Dr. Dimah Almani</strong></span>
+            </div>
+            <div class="footer-meta">
+                <span>&copy; 2026 SAMS Infrastructure. All Rights Reserved.</span>
+                <span><i class="fa-solid fa-shield-halved"></i> End-to-End Encryption Protocol</span>
+            </div>
+        </div>
     </footer>
+
 </body>
 </html>

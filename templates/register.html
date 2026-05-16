@@ -3,87 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS - Register</title>
+    <title>SAMS - Create Secure Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #635bff;
-            --secondary-color: #4b3eb5;
-            --bg-color: #0f0c1b;
-            --card-bg: #181528;
-            --text-color: #f3f4f6;
-            --muted-text: #9ca3af;
-            --border-color: #2e2a47;
-            --error-color: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #2e1a47 0%, #0d0614 100%);
+            --card-bg: rgba(25, 12, 38, 0.65);
+            --primary-purple: #9d4edd;
+            --light-purple: #e0aaff;
+            --deep-purple: #5a189a;
+            --text-main: #f3eeff;
+            --text-muted: #b3a2c7;
+            --neon-glow: 0 0 20px rgba(157, 78, 221, 0.4);
+            --danger-color: #ff4d6d;
+            --success-color: #70e000;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
-        header { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%); }
-        header h1 { color: var(--primary-color); font-size: 24px; letter-spacing: 1px; margin-bottom: 5px; }
-        header p { color: var(--muted-text); font-size: 14px; }
-        main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
-        .container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 480px; padding: 35px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
-        h2 { margin-bottom: 25px; font-weight: 600; text-align: center; font-size: 22px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--muted-text); }
-        input, select { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); font-size: 15px; }
-        input:focus, select:focus { outline: none; border-color: var(--primary-color); }
-        button { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        button:hover { background-color: var(--secondary-color); }
-        .switch-form { text-align: center; margin-top: 20px; font-size: 14px; color: var(--muted-text); }
-        .switch-form a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
-        .switch-form a:hover { text-decoration: underline; }
-        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; text-align: center; }
-        .alert-error { background-color: rgba(239, 68, 68, 0.15); color: var(--error-color); border: 1px solid var(--error-color); }
-        footer { border-top: 1px solid var(--border-color); background-color: var(--card-bg); padding: 30px 20px; text-align: center; font-size: 13px; line-height: 1.8; color: var(--muted-text); }
-        .footer-team { font-weight: 600; color: var(--text-color); margin-bottom: 5px; }
-        .footer-uni { color: var(--primary-color); font-weight: bold; }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background: var(--card-bg);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            padding: 45px 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), var(--neon-glow);
+            text-align: center;
+        }
+
+        .brand-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--light-purple), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 35px;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: rgba(255, 77, 109, 0.15);
+            border: 1px solid var(--danger-color);
+            color: #ff85a1;
+        }
+
+        .alert-success {
+            background: rgba(112, 224, 0, 0.15);
+            border: 1px solid var(--success-color);
+            color: #9ef01a;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-purple);
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background: rgba(13, 6, 20, 0.5);
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.3);
+            background: rgba(13, 6, 20, 0.8);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--deep-purple), var(--primary-purple));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(90, 24, 154, 0.4);
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 78, 221, 0.6);
+            background: linear-gradient(90deg, var(--primary-purple), #c77dff);
+        }
+
+        .auth-footer-text {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer-text a {
+            color: var(--light-purple);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .auth-footer-text a:hover {
+            color: var(--primary-purple);
+            text-decoration: underline;
+        }
+
+        footer {
+            background: rgba(13, 6, 20, 0.8);
+            border-top: 1px solid rgba(157, 78, 221, 0.15);
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        footer span {
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>SAMS : Secure Admin Messaging System</h1>
-        <p>Shaqra University — College of Computer and Information Technology (CCIT)</p>
-    </header>
-    <main>
-        <div class="container">
-            <h2>Account Authorization Registration</h2>
+
+    <div class="wrapper">
+        <div class="auth-container">
+            <div class="brand-logo">SAMS</div>
+            <div class="subtitle">Secure Admin Messaging System</div>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="alert alert-error">{{ message|safe }}</div>
+                        <div class="alert alert-{{ category }}">
+                            <i class="fa-solid {% if category == 'danger' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}"></i>
+                            {{ message }}
+                        </div>
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="{{ url_for('register') }}" method="POST">
+
+            <form method="POST" action="{{ url_for('register') }}">
                 <div class="form-group">
-                    <label>Full Name / Username</label>
-                    <input type="text" name="username" value="{{ prefill_user if prefill_user else '' }}" required autocomplete="username">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <input type="text" name="username" class="form-control" placeholder="Choose Admin Username" required autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required autocomplete="new-password">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password" class="form-control" placeholder="Create Secure Password" required>
                 </div>
-                <div class="form-group">
-                    <label>Administrative Role (Authorization Level)</label>
-                    <select name="role" required>
-                        <option value="" disabled selected>Select your professional role...</option>
-                        <option value="Executive Management">Executive Management (Dean / Vice Dean)</option>
-                        <option value="Administrative Affairs">Administrative Affairs Department</option>
-                        <option value="Operational Security Control">Operational Security Control</option>
-                        <option value="Academic Registry">Academic Registry & Admissions</option>
-                    </select>
-                </div>
-                <button type="submit">Create Account</button>
+                <button type="submit" class="btn-submit">Initialize Account</button>
             </form>
-            <div class="switch-form">
-                Already registered? <a href="{{ url_for('login') }}">Log In here</a>
+
+            <div class="auth-footer-text">
+                Already registered? <a href="{{ url_for('login') }}">Sign In</a>
             </div>
         </div>
-    </main>
+    </div>
+
     <footer>
-        <div class="footer-team">Project Team: Taleen Alammar — Sarah Alshabib — Aseel Alsnaidi — Danah Aljammaz</div>
-        <div>Supervised by: Dr. Dimah Almani</div>
-        <div class="footer-uni">Shaqra University | Information Security Capstone Project | CCIT</div>
+        <p>&copy; 2026 SAMS Infrastructure. All Rights Reserved. Powered by <span>End-to-End Encryption</span>.</p>
     </footer>
+
 </body>
 </html>
