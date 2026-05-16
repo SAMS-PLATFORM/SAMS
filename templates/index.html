@@ -3,326 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS SECURE ENGINE</title>
+    <title>SAMS - Register</title>
     <style>
-        body {
-            background-color: #0b0f19;
-            color: #f7fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #635bff;
+            --secondary-color: #4b3eb5;
+            --bg-color: #0f0c1b;
+            --card-bg: #181528;
+            --text-color: #f3f4f6;
+            --muted-text: #9ca3af;
+            --border-color: #2e2a47;
+            --error-color: #ef4444;
         }
-        .header-panel {
-            width: 100%;
-            max-width: 650px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #2d3748;
-        }
-        .title-area h2 {
-            margin: 0;
-            color: #00f2fe;
-            font-size: 18pt;
-        }
-        .logout-btn {
-            padding: 8px 16px;
-            background-color: #742a2a;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 10pt;
-            font-weight: bold;
-            border: 1px solid #e53e3e;
-        }
-        .main-engine {
-            background: linear-gradient(145deg, #111827, #1f2937);
-            border: 1px solid #2d3748;
-            border-radius: 16px;
-            padding: 30px;
-            width: 100%;
-            max-width: 650px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
-        }
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background-color: #0f172a;
-            border: 1px solid #2d3748;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
-        .stat-label {
-            font-size: 8.5pt;
-            color: #718096;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-        .stat-value {
-            font-size: 13pt;
-            font-weight: bold;
-            color: #4ade80;
-        }
-        .form-group {
-            margin-bottom: 25px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #cbd5e0;
-            font-size: 10.5pt;
-            font-weight: 500;
-        }
-        textarea, select {
-            width: 100%;
-            padding: 12px;
-            background-color: #0f172a;
-            border: 1px solid #4a5568;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 11pt;
-            box-sizing: border-box;
-        }
-        textarea {
-            resize: vertical;
-            height: 100px;
-        }
-        .dispatch-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(90deg, #00f2fe, #4facfe);
-            border: none;
-            border-radius: 8px;
-            color: #0b0f19;
-            font-size: 12pt;
-            font-weight: bold;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-        }
-        .result-panel {
-            margin-top: 30px;
-            background-color: #090d16;
-            border-left: 4px solid #00f2fe;
-            border-radius: 6px;
-            padding: 20px;
-        }
-        .result-title {
-            font-size: 9.5pt;
-            color: #00f2fe;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .result-box {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #111827;
-            padding: 12px;
-            border-radius: 4px;
-            color: #e2e8f0;
-            word-break: break-all;
-        }
-        .audit-container {
-            width: 100%;
-            max-width: 650px;
-            background-color: #ffffff;
-            color: #1a202c;
-            border-radius: 14px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-            box-sizing: border-box;
-        }
-        .audit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #edf2f7;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .audit-title {
-            font-size: 14pt;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 0;
-        }
-        .badge-encrypted {
-            background-color: #e6fffa;
-            color: #319795;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 9pt;
-            font-weight: 600;
-        }
-        .log-card {
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            background-color: #f8fafc;
-        }
-        .flow-section {
-            font-size: 9.5pt;
-            color: #718096;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-        .role-bold {
-            font-size: 11pt;
-            font-weight: bold;
-            color: #1a202c;
-        }
-        .crypto-section {
-            background-color: #ffffff;
-            border: 1px dashed #cbd5e0;
-            border-radius: 6px;
-            padding: 12px;
-            margin-top: 5px;
-        }
-        .crypto-label {
-            font-size: 8.5pt;
-            font-weight: bold;
-            color: #4a5568;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .crypto-value {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 9.5pt;
-            color: #e53e3e;
-            word-break: break-all;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
+        header { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%); }
+        header h1 { color: var(--primary-color); font-size: 24px; letter-spacing: 1px; margin-bottom: 5px; }
+        header p { color: var(--muted-text); font-size: 14px; }
+        main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+        .container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 480px; padding: 35px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+        h2 { margin-bottom: 25px; font-weight: 600; text-align: center; font-size: 22px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--muted-text); }
+        input, select { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); font-size: 15px; }
+        input:focus, select:focus { outline: none; border-color: var(--primary-color); }
+        button { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        button:hover { background-color: var(--secondary-color); }
+        .switch-form { text-align: center; margin-top: 20px; font-size: 14px; color: var(--muted-text); }
+        .switch-form a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        .switch-form a:hover { text-decoration: underline; }
+        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; text-align: center; }
+        .alert-error { background-color: rgba(239, 68, 68, 0.15); color: var(--error-color); border: 1px solid var(--error-color); }
+        footer { border-top: 1px solid var(--border-color); background-color: var(--card-bg); padding: 30px 20px; text-align: center; font-size: 13px; line-height: 1.8; color: var(--muted-text); }
+        .footer-team { font-weight: 600; color: var(--text-color); margin-bottom: 5px; }
+        .footer-uni { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <div class="header-panel">
-        <div class="title-area">
-            <h2>Welcome, {{ username }}</h2>
-            <span style="font-size: 10pt; color: #a0aec0;">SAMS Cryptographic Messaging Node</span>
-        </div>
-        <a href="/logout" class="logout-btn">Disconnect</a>
-    </div>
-
-    <div class="main-engine">
-        <div class="stat-grid">
-            <div class="stat-card">
-                <div class="stat-label">Cryptographic Engine</div>
-                <div class="stat-value" style="color: #00f2fe;">AES-256</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Bundles Sent</div>
-                <div class="stat-value">{% if encrypted_text %}1{% else %}0{% endif %}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">System Status</div>
-                <div class="stat-value">ACTIVE</div>
-            </div>
-        </div>
-
-        <form action="/dashboard" method="POST">
-            <div class="form-group">
-                <label>Select Your Operational Privilege (From Role)</label>
-                <select name="sender_role">
-                    <option value="Admin" {% if sender_role == 'Admin' %}selected{% endif %}>Admin</option>
-                    <option value="Dean" {% if sender_role == 'Dean' %}selected{% endif %}>Dean</option>
-                    <option value="Professor" {% if sender_role == 'Professor' %}selected{% endif %}>Professor</option>
-                    <option value="Head" {% if sender_role == 'Head' %}selected{% endif %}>Head</option>
-                    <option value="Doctor" {% if sender_role == 'Doctor' %}selected{% endif %}>Doctor</option>
-                    <option value="Dep" {% if sender_role == 'Dep' %}selected{% endif %}>Dep</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Target Clearance Authority (Receiver Node)</label>
-                <select name="target_authority">
-                    <option value="Admin" {% if target_authority == 'Admin' %}selected{% endif %}>Admin</option>
-                    <option value="Dean" {% if target_authority == 'Dean' %}selected{% endif %}>Dean</option>
-                    <option value="Professor" {% if target_authority == 'Professor' %}selected{% endif %}>Professor</option>
-                    <option value="Head" {% if target_authority == 'Head' %}selected{% endif %}>Head</option>
-                    <option value="Doctor" {% if target_authority == 'Doctor' %}selected{% endif %}>Doctor</option>
-                    <option value="Dep" {% if target_authority == 'Dep' %}selected{% endif %}>Dep</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Confidential Payload Input (Plaintext Message)</label>
-                <textarea name="payload_input" placeholder="Inject sensitive administrative commands or grades here..." required>{{ original_text }}</textarea>
-            </div>
-
-            <button type="submit" class="dispatch-btn">PROCESS & CRYPTOGRAPHICALLY DISPATCH</button>
-        </form>
-
-        {% if encrypted_text %}
-            <div class="result-panel">
-                <div class="result-title">🔒 Encrypted Payload Output (Ciphertext)</div>
-                <div class="result-box">{{ encrypted_text }}</div>
-                <div style="margin-top: 10px; font-size: 9pt; color: #a0aec0;">
-                    Dispatched Successfully from <strong style="color: #00f2fe;">{{ sender_role }}</strong> to <strong style="color: #fff;">{{ target_authority }}</strong>
+    <header>
+        <h1>SAMS : Secure Admin Messaging System</h1>
+        <p>Shaqra University — College of Computer and Information Technology (CCIT)</p>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Account Authorization Registration</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-error">{{ message|safe }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="form-group">
+                    <label>Full Name / Username</label>
+                    <input type="text" name="username" value="{{ prefill_user if prefill_user else '' }}" required autocomplete="username">
                 </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label>Administrative Role (Authorization Level)</label>
+                    <select name="role" required>
+                        <option value="" disabled selected>Select your professional role...</option>
+                        <option value="Executive Management">Executive Management (Dean / Vice Dean)</option>
+                        <option value="Administrative Affairs">Administrative Affairs Department</option>
+                        <option value="Operational Security Control">Operational Security Control</option>
+                        <option value="Academic Registry">Academic Registry & Admissions</option>
+                    </select>
+                </div>
+                <button type="submit">Create Account</button>
+            </form>
+            <div class="switch-form">
+                Already registered? <a href="{{ url_for('login') }}">Log In here</a>
             </div>
-        {% endif %}
-    </div>
-
-    <div class="audit-container">
-        <div class="audit-header">
-            <h3 class="audit-title">🛡️ Secure System Audit Log</h3>
-            <span class="badge-encrypted">End-to-End Encrypted</span>
         </div>
-
-        {% if logs %}
-            {% for log in logs %}
-            <div class="log-card">
-                <div class="flow-section">
-                    Communication Flow: <span class="role-bold">{{ log.sender_role }}</span> <span style="color: #3182ce;">➔ To Recipient:</span> <span class="role-bold">{{ log.receiver_role }}</span>
-                </div>
-                <div class="crypto-section">
-                    <div class="crypto-label">Encrypted Content (Confidentiality)</div>
-                    <div class="crypto-value">{{ log.ciphertext }}</div>
-                </div>
-                <div class="crypto-section" style="margin-top: 10px;">
-                    <div class="crypto-label">Integrity Verification (SHA-256 Hash)</div>
-                    <div class="crypto-value" style="color: #4a5568;">{{ log.msg_hash }}</div>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div style="text-align: center; color: #718096; padding: 20px;">No encrypted audit flows captured yet.</div>
-        {% endif %}
-    </div>
-
-    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #a0aec0; font-family: sans-serif; font-size: 11pt; line-height: 1.6;">
-        <div style="margin-bottom: 15px;">
-            <span style="margin: 0 15px; font-weight: bold; color: #e2e8f0;">Taleen Alammar</span>
-            <span style="margin: 0 15px; font-weight: bold; color: #e2e8f0;">Sarah Alshabib</span>
-        </div>
-        <div style="margin-bottom: 20px;">
-            <span style="margin: 0 15px; font-weight: bold; color: #e2e8f0;">Aseel Alsnaidi</span>
-            <span style="margin: 0 15px; font-weight: bold; color: #e2e8f0;">Danah Aljammaz</span>
-        </div>
-        <div style="margin-top: 15px; border-top: 1px solid #2d3748; padding-top: 15px;">
-            <p style="margin: 5px 0; font-size: 10pt; text-transform: uppercase; letter-spacing: 1px;">Supervised By</p>
-            <p style="margin: 5px 0; font-size: 12pt; font-weight: bold; color: #e2e8f0;">Dr. Dema Al-Manah</p>
-            <p style="margin: 10px 0 0 0; font-size: 9.5pt; color: #718096;">Information Security Project • CCIT • Shaqra University © 2026</p>
-        </div>
+    </main>
+    <footer>
+        <div class="footer-team">Project Team: Taleen Alammar — Sarah Alshabib — Aseel Alsnaidi — Danah Aljammaz</div>
+        <div>Supervised by: Dr. Dimah Almani</div>
+        <div class="footer-uni">Shaqra University | Information Security Capstone Project | CCIT</div>
     </footer>
-
 </body>
 </html>

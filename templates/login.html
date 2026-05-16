@@ -3,138 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS - Identity Verification Gateway</title>
+    <title>SAMS - Login</title>
     <style>
-        body {
-            background-color: #0b0f19;
-            color: #f7fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #635bff;
+            --secondary-color: #4b3eb5;
+            --bg-color: #0f0c1b;
+            --card-bg: #181528;
+            --text-color: #f3f4f6;
+            --muted-text: #9ca3af;
+            --border-color: #2e2a47;
+            --error-color: #ef4444;
+            --success-color: #10b981;
         }
-        .container {
-            background: linear-gradient(145deg, #111827, #1f2937);
-            border: 1px solid #2d3748;
-            border-radius: 16px;
-            padding: 40px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-        h1 {
-            color: #00f2fe;
-            margin-bottom: 10px;
-            font-size: 22pt;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        p.subtitle {
-            color: #a0aec0;
-            margin-bottom: 30px;
-            font-size: 11pt;
-        }
-        .form-group {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #cbd5e0;
-            font-size: 10.5pt;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            background-color: #0f172a;
-            border: 1px solid #4a5568;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 11pt;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-        input:focus {
-            outline: none;
-            border-color: #00f2fe;
-            box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
-        }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(90deg, #00f2fe, #4facfe);
-            border: none;
-            border-radius: 8px;
-            color: #0b0f19;
-            font-size: 12pt;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        .flash-messages-danger {
-            background-color: #742a2a;
-            color: #fff;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 10.5pt;
-            border: 1px solid #e53e3e;
-        }
-        .link-footer {
-            margin-top: 25px;
-            font-size: 10pt;
-            color: #a0aec0;
-        }
-        .link-footer a {
-            color: #00f2fe;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; min-height: 100vh; }
+        header { text-align: center; padding: 25px 20px; border-bottom: 1px solid var(--border-color); background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-color) 100%); }
+        header h1 { color: var(--primary-color); font-size: 24px; letter-spacing: 1px; margin-bottom: 5px; }
+        header p { color: var(--muted-text); font-size: 14px; }
+        main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; position: relative; }
+        .container { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 480px; padding: 35px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+        h2 { margin-bottom: 25px; font-weight: 600; text-align: center; font-size: 22px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--muted-text); }
+        input { width: 100%; padding: 12px; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-color); font-size: 15px; }
+        input:focus { outline: none; border-color: var(--primary-color); }
+        button { width: 100%; padding: 12px; background-color: var(--primary-color); color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        button:hover { background-color: var(--secondary-color); }
+        .switch-form { text-align: center; margin-top: 20px; font-size: 14px; color: var(--muted-text); }
+        .switch-form a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        .switch-form a:hover { text-decoration: underline; }
+        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; text-align: center; }
+        .alert-error { background-color: rgba(239, 68, 68, 0.15); color: var(--error-color); border: 1px solid var(--error-color); }
+        .alert-success { background-color: rgba(16, 185, 129, 0.15); color: var(--success-color); border: 1px solid var(--success-color); }
+        footer { border-top: 1px solid var(--border-color); background-color: var(--card-bg); padding: 30px 20px; text-align: center; font-size: 13px; line-height: 1.8; color: var(--muted-text); }
+        .footer-team { font-weight: 600; color: var(--text-color); margin-bottom: 5px; }
+        .footer-uni { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Verification Gate</h1>
-        <p class="subtitle">Authenticate Credentials via Cryptographic DB</p>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-messages-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <form action="/" method="POST">
-            <div class="form-group">
-                <label for="username">Verify Account Name</label>
-                <input type="text" id="username" name="username" required placeholder="Enter registered name">
+    <header>
+        <h1>SAMS : Secure Admin Messaging System</h1>
+        <p>Shaqra University — College of Computer and Information Technology (CCIT)</p>
+    </header>
+    <main>
+        <div class="container">
+            <h2>System Authentication</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+            <div class="switch-form">
+                Don't have an account? <a href="{{ url_for('register') }}">Create Account</a>
             </div>
-            <div class="form-group">
-                <label for="password">Verify Password</label>
-                <input type="password" id="password" name="password" required placeholder="Enter password">
-            </div>
-            <button type="submit" class="btn">Verify & Log In</button>
-        </form>
-
-        <div class="link-footer">
-            Don't have an authorized account? <a href="/register">Create Account</a>
         </div>
-    </div>
-
+    </main>
+    <footer>
+        <div class="footer-team">Project Team: Taleen Alammar — Sarah Alshabib — Aseel Alsnaidi — Danah Aljammaz</div>
+        <div>Supervised by: Dr. Dimah Almani</div>
+        <div class="footer-uni">Shaqra University | Information Security Capstone Project | CCIT</div>
+    </footer>
 </body>
 </html>

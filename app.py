@@ -1,9 +1,10 @@
+import os
+import hashlib
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import base64
-import hashlib
+from cryptography.fernet import Fernet
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SAMS_SUPER_SECRET_KEY_2026'
@@ -14,98 +15,99 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+KEY = Fernet.generate_key()
+cipher_suite = Fernet(KEY)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
+    role = db.Column(db.String(100), nullable=False)
 
-class MessageLog(db.Model):
+class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender_role = db.Column(db.String(50), nullable=False)
-    receiver_role = db.Column(db.String(50), nullable=False)
+    sender_username = db.Column(db.String(150), nullable=False)
+    sender_role = db.Column(db.String(100), nullable=False)
+    recipient_role = db.Column(db.String(100), nullable=False)
     ciphertext = db.Column(db.Text, nullable=False)
-    msg_hash = db.Column(db.String(64), nullable=False)
+    integrity_hash = db.Column(db.String(64), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username').strip()
-        password = request.form.get('password')
-        
-        user = User.query.filter_by(username=username).first()
-        
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Invalid username or password!', 'danger')
-            return redirect(url_for('login'))
-            
-    return render_template('login.html')
+@app.route('/')
+@login_required
+def index():
+    encrypted_messages = Message.query.filter_by(recipient_role=current_user.role).all()
+    decrypted_messages = []
+    for msg in encrypted_messages:
+        try:
+            decrypted_bytes = cipher_suite.decrypt(msg.ciphertext.encode())
+            decrypted_text = decrypted_bytes.decode()
+            decrypted_messages.append({
+                'sender': msg.sender_username,
+                'sender_role': msg.sender_role,
+                'ciphertext': msg.ciphertext,
+                'hash': msg.integrity_hash,
+                'plain_text': decrypted_text
+            })
+        except Exception as e:
+            print(f"Decryption failed: {str(e)}")
+    return render_template('index.html', messages=decrypted_messages)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username').strip()
-        password = request.form.get('password')
-        
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            flash('Username already exists! Please choose another one.', 'danger')
-            return redirect(url_for('register'))
-        
-        hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
-        new_user = User(username=username, password=hashed_pw)
-        
+        username = request.form['username'].strip()
+        password = request.form['password']
+        role = request.form['role']
+        user_exists = User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first()
+        if user_exists:
+            flash('Account already exists! Please Log In instead.', 'error')
+            return render_template('register.html', prefill_user=username)
+        hashed_password = generate_password_hash(password, method='scrypt')
+        new_user = User(username=username, password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
-        
-        login_user(new_user)
-        return redirect(url_for('dashboard'))
-        
+        flash('Account created successfully! Please authenticate.', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/dashboard', methods=['GET', 'POST'])
-@login_required
-def dashboard():
-    encrypted_text = ""
-    msg_hash = ""
-    original_text = ""
-    sender_role = "Admin"
-    target_authority = "Dean"
-    
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
-        original_text = request.form.get('payload_input', '')
-        sender_role = request.form.get('sender_role', 'Admin')
-        target_authority = request.form.get('target_authority', 'Dean')
-        
-        if original_text:
-            encrypted_text = base64.b64encode(original_text.encode('utf-8')).decode('utf-8')
-            msg_hash = hashlib.sha256(original_text.encode('utf-8')).hexdigest()
-            
-            new_log = MessageLog(
-                sender_role=sender_role,
-                receiver_role=target_authority,
-                ciphertext=encrypted_text,
-                msg_hash=msg_hash
-            )
-            db.session.add(new_log)
-            db.session.commit()
-            
-    active_logs = MessageLog.query.order_by(MessageLog.id.desc()).all()
-    
-    return render_template('index.html', 
-                           username=current_user.username, 
-                           original_text=original_text,
-                           encrypted_text=encrypted_text,
-                           msg_hash=msg_hash,
-                           sender_role=sender_role,
-                           target_authority=target_authority,
-                           logs=active_logs)
+        username = request.form['username'].strip()
+        password = request.form['password']
+        user = User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first()
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            flash('Authentication Failed: Invalid Username or Password.', 'error')
+            return render_template('login.html')
+    return render_template('login.html')
+
+@app.route('/send_message', methods=['POST'])
+@login_required
+def send_message():
+    recipient_role = request.form['recipient_role']
+    plain_text = request.form['message_text'].strip()
+    if not plain_text:
+        return redirect(url_for('index'))
+    ciphertext = cipher_suite.encrypt(plain_text.encode()).decode()
+    sha256_hash = hashlib.sha256(plain_text.encode()).hexdigest()
+    new_msg = Message(
+        sender_username=current_user.username,
+        sender_role=current_user.role,
+        recipient_role=recipient_role,
+        ciphertext=ciphertext,
+        integrity_hash=sha256_hash
+    )
+    db.session.add(new_msg)
+    db.session.commit()
+    flash('Payload Encrypted and Transmitted Securely!', 'crypto_success')
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 @login_required
