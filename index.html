@@ -3,256 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS | Secure Admin Messaging System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>SAMS | Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4338ca;
-            --primary-dark: #3730a3;
-            --accent: #f43f5e;
-            --bg: #fdfdff;
-            --glass: rgba(255, 255, 255, 0.9);
+            --bg-base: #060814;
+            --surface: #0f1322;
+            --border: rgba(0, 242, 254, 0.12);
+            --cyan: #00f2fe;
+            --pink: #ff2a5f;
+            --green: #059669;
+            --txt: #f1f5f9;
         }
-
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at top right, #eef2ff, #fdfdff);
+            background-color: var(--bg-base);
+            color: var(--txt);
             margin: 0;
-            color: #1e293b;
-            min-height: 100vh;
+            padding-bottom: 60px;
         }
-
-        /* Navbar */
         nav {
-            padding: 20px 50px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e2e8f0;
+            background: #090c1a;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-
         .logo {
             font-size: 1.5rem;
             font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
+            background: linear-gradient(90deg, var(--cyan), #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
-
-        /* Main Container */
-        .container {
+        .identity {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .badge {
+            background: rgba(0, 242, 254, 0.08);
+            color: var(--cyan);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid rgba(0, 242, 254, 0.15);
+        }
+        .logout {
+            color: var(--pink);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 42, 95, 0.15);
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .logout:hover {
+            background: rgba(255, 42, 95, 0.08);
+            box-shadow: 0 0 15px rgba(255, 42, 95, 0.15);
+        }
+        .wrapper {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
         }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(to right, #4338ca, #f43f5e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Messaging Panel */
-        .panel {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
-            border: 1px solid #f1f5f9;
-            margin-bottom: 50px;
-        }
-
-        .grid {
+        .stats {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
         }
-
-        .input-wrapper label {
+        .card-stat {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-lbl {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .stat-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+        .panel {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+        .panel h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--cyan);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding-bottom: 12px;
+        }
+        .row {
+            margin-bottom: 20px;
+        }
+        .row label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #f1f5f9;
-            border-radius: 12px;
-            font-family: inherit;
-            transition: 0.3s;
-            box-sizing: border-box;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: #f8faff;
-        }
-
-        .send-btn {
-            background: var(--primary);
-            color: white;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
             font-weight: 700;
-            cursor: pointer;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+        select, textarea {
             width: 100%;
+            padding: 14px;
+            background: #070914;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+            box-sizing: border-box;
             transition: 0.3s;
-            box-shadow: 0 10px 15px -3px rgba(67, 56, 202, 0.3);
         }
-
-        .send-btn:hover {
-            background: var(--primary-dark);
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+        }
+        .btn-send {
+            background: linear-gradient(90deg, var(--cyan), #4facfe);
+            color: #060814;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-send:hover {
             transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 242, 254, 0.3);
         }
-
-        /* Data Log */
-        .log-header {
+        .sec-hdr {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-
-        .badge {
-            background: #ecfdf5;
-            color: #059669;
-            padding: 6px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+        .badge-ok {
+            background: rgba(5, 150, 105, 0.08);
+            color: #34d399;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
             font-weight: 700;
-            border: 1px solid #d1fae5;
+            border: 1px solid rgba(5, 150, 105, 0.15);
         }
-
-        .data-card {
-            background: white;
+        .audit-node {
+            background: var(--surface);
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            border-left: 4px solid var(--cyan);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             display: flex;
             gap: 30px;
         }
-
-        .info-block { flex: 1; }
-        .data-block { flex: 2; }
-
-        .label-tag {
-            font-size: 0.7rem;
+        .meta {
+            flex: 1;
+            border-right: 1px solid rgba(255,255,255,0.04);
+            padding-right: 15px;
+        }
+        .lbl-meta {
+            font-size: 0.65rem;
             text-transform: uppercase;
-            color: #94a3b8;
+            color: #64748b;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             display: block;
         }
-
-        .crypto-text {
-            background: #f8fafc;
+        .val-node {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .payload {
+            flex: 3;
+        }
+        .box-data {
             padding: 12px;
             border-radius: 8px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            word-break: break-all;
-            color: var(--accent);
-            border: 1px dashed #cbd5e1;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            box-sizing: border-box;
         }
-
-        .hash-text {
-            font-size: 0.75rem;
-            color: #64748b;
-            margin-top: 10px;
+        .box-data.cipher {
+            background: rgba(255, 42, 95, 0.02);
+            color: #fb7185;
+            border: 1px dashed rgba(255, 42, 95, 0.15);
             font-family: monospace;
+            word-break: break-all;
         }
-
-        footer {
-            text-align: center;
-            padding: 40px;
+        .hash-vault {
+            background: #070913;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.75rem;
             color: #94a3b8;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        footer {
+            background: #03050a;
+            padding: 35px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            margin-top: 60px;
+        }
+        .foot-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .foot-title {
+            font-weight: 800;
+            color: var(--cyan);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+        .team-names {
+            color: #94a3b8;
+            font-weight: 600;
+            line-height: 1.8;
             font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-
     <nav>
-        <div class="logo">SAMS SECURE</div>
-        <div style="font-weight: 600; font-size: 0.9rem;">Internal Admin Portal</div>
+        <div class="logo">SAMS SECURE ENGINE</div>
+        <div class="identity">
+            <span class="badge">Node: {{ current_user }} [{{ role }}]</span>
+            <a href="/logout" class="logout">Disconnect</a>
+        </div>
     </nav>
-
-    <div class="container">
-        <header class="hero">
-            <h1>Secure Admin Messaging System</h1>
-            <p>Advanced Internal Platform for Sensitive Data Exchange</p>
-        </header>
-
+    <div class="wrapper">
+        <section class="stats">
+            <div class="card-stat">
+                <div class="stat-lbl">Cryptographic Engine</div>
+                <div class="stat-val" style="font-size: 1.2rem; color: #34d399; margin-top: 5px;">AES-256 ACTIVE</div>
+            </div>
+            <div class="card-stat">
+                <div class="stat-lbl">Bundles Transmitted</div>
+                <div class="stat-val" style="color: var(--cyan);">{{ total_sent }}</div>
+            </div>
+            <div class="card-stat">
+                <div class="stat-lbl">Bundles Intercepted</div>
+                <div class="stat-val">{{ total_received }}</div>
+            </div>
+        </section>
         <section class="panel">
+            <h3>Transaction Center</h3>
             <form action="/send" method="POST">
-                <div class="grid">
-                    <div class="input-wrapper">
-                        <label>Sender Identity</label>
-                        <input type="text" name="sender" placeholder="e.g. University Dean" required>
-                    </div>
-                    <div class="input-wrapper">
-                        <label>Recipient Authority</label>
-                        <input type="text" name="receiver" placeholder="e.g. Department Head" required>
-                    </div>
+                <div class="row">
+                    <label>Target Clearance Authority</label>
+                    <select name="receiver" required>
+                        {% for u in users %}
+                        <option value="{{ u.username }}">{{ u.username }} [Role: {{ u.role }}]</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <div class="input-wrapper">
-                    <label>Sensitive Content (Auto-Encrypted)</label>
-                    <textarea name="content" rows="4" placeholder="Enter confidential administrative data here..." required></textarea>
+                <div class="row">
+                    <label>Confidential Payload Input</label>
+                    <textarea name="payload" rows="4" placeholder="Inject sensitive administrative commands here..." required></textarea>
                 </div>
-                <button type="submit" class="send-btn">Generate Ciphertext & Send Securely</button>
+                <button type="submit" class="btn-send">Process & Cryptographically Dispatch</button>
             </form>
         </section>
-
         <section>
-            <div class="log-header">
-                <h2>🛡️ Secure System Audit Log</h2>
-                <div class="badge">End-to-End Encrypted</div>
+            <div class="sec-hdr">
+                <h2 style="font-weight: 800; margin: 0; font-size: 1.4rem;">System Cryptographic Ledger</h2>
+                <div class="badge-ok">SHA-256 Integrity Link Verified</div>
             </div>
-
             {% for m in messages %}
-            <div class="data-card">
-                <div class="info-block">
-                    <span class="label-tag">Communication Flow</span>
-                    <div style="font-weight: 700;">{{ m.sender }}</div>
-                    <div style="color: var(--primary); font-size: 0.8rem; margin: 5px 0;">➞ To Recipient</div>
-                    <div style="font-weight: 700;">{{ m.receiver }}</div>
+            <div class="audit-node">
+                <div class="meta">
+                    <span class="lbl-meta">Source Node</span>
+                    <div class="val-node" style="color: var(--cyan);">{{ m.sender }}</div>
+                    <span class="lbl-meta">Target Node</span>
+                    <div class="val-node" style="color: #a855f7;">{{ m.receiver }}</div>
                 </div>
-                <div class="data-block">
-                    <span class="label-tag">Encrypted Content (Confidentiality)</span>
-                    <div class="crypto-text">{{ m.ciphertext }}</div>
-
-                    <span class="label-tag" style="margin-top: 15px;">Integrity Verification (SHA-256 Hash)</span>
-                    <div class="hash-text">{{ m.digital_fingerprint }}</div>
+                <div class="payload">
+                    <span class="lbl-meta">AES Block Ciphertext Payload</span>
+                    <div class="box-data cipher">{{ m.ciphertext }}</div>
+                    <span class="lbl-meta">SHA-256 Checksum Signature</span>
+                    <div class="hash-vault">{{ m.fingerprint }}</div>
                 </div>
+            </div>
+            {% else %}
+            <div style="text-align: center; color: #64748b; padding: 30px; background: var(--surface); border-radius: 16px;">
+                No transmission logs recorded.
             </div>
             {% endfor %}
         </section>
     </div>
-
     <footer>
-        SAMS Project &copy; 2026 | Supervised by Dr. Dimah Almani
+        <div class="foot-grid">
+            <div>
+                <div class="foot-title">Cyber Engineering Developers</div>
+                <div class="team-names">
+                    Taleen Alammar &bull; Sarah Alshabib<br>
+                    Aseel Alsnaid &bull; Danah Aljammaz
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div class="foot-title">Project Supervisor</div>
+                <div class="team-names" style="color: var(--pink); font-weight: 700;">Dr. Dimah Almani</div>
+                <div style="margin-top: 10px; font-size: 0.75rem; color: #475569;">
+                    SAMS Core Engine &bull; CCIT &bull; Shaqra University &copy; 2026
+                </div>
+            </div>
+        </div>
     </footer>
-
 </body>
 </html>

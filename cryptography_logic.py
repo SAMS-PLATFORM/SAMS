@@ -1,11 +1,13 @@
-import hashlib
 from cryptography.fernet import Fernet
+import hashlib
 
-key = Fernet.generate_key()
-cipher_suite = Fernet(key)
+KEY = b'u76GfV_6v8eB6XmR0vLpXQ4D7uS3H9jK2mN1bV8cZ5A='
+cipher_suite = Fernet(KEY)
 
-def encrypt_message(text):
-    return cipher_suite.encrypt(text.encode()).decode()
+def encrypt_message(message: str) -> str:
+    if not message:
+        return ""
+    return cipher_suite.encrypt(message.encode()).decode()
 
-def generate_hash(text):
-    return hashlib.sha256(text.encode()).hexdigest()
+def generate_hash(message: str) -> str:
+    return hashlib.sha256(message.encode()).hexdigest()
