@@ -17,7 +17,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(20), default='Staff')
+    role = db.Column(db.String(50), default='Operational Officer')
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -28,10 +28,15 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username').strip()
         password = request.form.get('password')
+        role = request.form.get('role')
         
         user = User.query.filter_by(username=username).first()
         
         if user and check_password_hash(user.password, password):
+            if user.role != role:
+                flash('Access Denied: Role mismatch for this node!', 'danger')
+                return redirect(url_for('login'))
+                
             login_user(user)
             return redirect(url_for('dashboard'))
         else:
@@ -45,7 +50,7 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username').strip()
         password = request.form.get('password')
-        role = request.form.get('role', 'Staff')
+        role = request.form.get('role', 'Operational Officer')
         
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
@@ -58,8 +63,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         
-        flash('Account created successfully! Please verify your credentials below.', 'success')
-        return redirect(url_for('login'))
+        login_user(new_user)
+        return redirect(url_for('dashboard'))
         
     return render_template('register.html')
 

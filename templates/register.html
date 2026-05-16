@@ -33,6 +33,7 @@
             margin-bottom: 10px;
             font-size: 24pt;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
         p.subtitle {
             color: #a0aec0;
@@ -77,6 +78,8 @@
             cursor: pointer;
             transition: transform 0.2s, opacity 0.2s;
             margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .btn:hover {
             opacity: 0.9;
@@ -129,11 +132,12 @@
             <div class="form-group">
                 <label for="role">System Access Role</label>
                 <select id="role" name="role">
-                    <option value="Staff">Staff Officer</option>
-                    <option value="Admin">System Administrator</option>
+                    <option value="Operational Officer">Operational Officer</option>
+                    <option value="Intelligence Analyst">Intelligence Analyst</option>
+                    <option value="System Administrator">System Administrator</option>
                 </select>
             </div>
-            <button type="submit" class="btn">CREATE ACCOUNT</button>
+            <button type="submit" class="btn">Create Account</button>
         </form>
 
         <div class="link-footer">

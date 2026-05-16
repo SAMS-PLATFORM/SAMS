@@ -33,6 +33,7 @@
             margin-bottom: 10px;
             font-size: 22pt;
             letter-spacing: 1px;
+            text-transform: uppercase;
         }
         p.subtitle {
             color: #a0aec0;
@@ -49,7 +50,7 @@
             color: #cbd5e0;
             font-size: 10.5pt;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 12px;
             background-color: #0f172a;
@@ -60,15 +61,15 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
         }
-        input:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #4facfe;
-            box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+            border-color: #00f2fe;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
         }
         .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
             border: none;
             border-radius: 8px;
             color: #0b0f19;
@@ -76,6 +77,8 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s, opacity 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .btn:hover {
             opacity: 0.9;
@@ -114,7 +117,7 @@
 <body>
 
     <div class="container">
-        <h1>VERIFICATION GATE</h1>
+        <h1>Verification Gate</h1>
         <p class="subtitle">Authenticate Credentials via Cryptographic DB</p>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -134,11 +137,19 @@
                 <label for="password">Verify Password</label>
                 <input type="password" id="password" name="password" required placeholder="Enter password">
             </div>
-            <button type="submit" class="btn">VERIFY & LOG IN</button>
+            <div class="form-group">
+                <label for="role">Clearance Privilege Role</label>
+                <select id="role" name="role">
+                    <option value="Operational Officer">Operational Officer</option>
+                    <option value="Intelligence Analyst">Intelligence Analyst</option>
+                    <option value="System Administrator">System Administrator</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Verify & Log In</button>
         </form>
 
         <div class="link-footer">
-            Don't have an account? <a href="/register">Create Account</a>
+            Don't have an authorized account? <a href="/register">Create Account</a>
         </div>
     </div>
 
