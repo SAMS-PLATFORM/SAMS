@@ -3,148 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS | Registration</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>SAMS - Create Secure Account</title>
     <style>
-        :root {
-            --bg: #060913;
-            --card: rgba(15, 23, 42, 0.6);
-            --purple: #9d4edd;
-            --cyan: #00f2fe;
-        }
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: radial-gradient(circle at center, #140d27 0%, var(--bg) 100%);
-            margin: 0;
+            background-color: #0b0f19;
+            color: #f7fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            color: #f8fafc;
-        }
-        .container {
-            width: 100%;
-            max-width: 440px;
+            margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin: 0;
-            background: linear-gradient(to right, var(--purple), var(--cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -1px;
-        }
-        .header p {
-            color: #64748b;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-        .card {
-            background: var(--card);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(157, 78, 221, 0.15);
-            border-radius: 24px;
+        .container {
+            background: linear-gradient(145deg, #111827, #1f2937);
+            border: 1px solid #2d3748;
+            border-radius: 16px;
             padding: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            text-align: center;
         }
-        .group {
-            margin-bottom: 20px;
-        }
-        .group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--purple);
-            text-transform: uppercase;
-            margin-bottom: 8px;
+        h1 {
+            color: #00f2fe;
+            margin-bottom: 10px;
+            font-size: 24pt;
             letter-spacing: 1px;
         }
-        .group input, .group select {
-            width: 100%;
-            padding: 14px;
-            background: rgba(5, 8, 16, 0.8);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            color: white;
-            font-size: 0.95rem;
-            box-sizing: border-box;
-            transition: 0.3s;
+        p.subtitle {
+            color: #a0aec0;
+            margin-bottom: 30px;
+            font-size: 11pt;
         }
-        .group input:focus, .group select:focus {
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e0;
+            font-size: 10.5pt;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f172a;
+            border: 1px solid #4a5568;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 11pt;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
             outline: none;
-            border-color: var(--purple);
-            box-shadow: 0 0 15px rgba(157, 78, 221, 0.2);
+            border-color: #00f2fe;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
         }
         .btn {
-            background: linear-gradient(90deg, var(--purple), #7b2cbf);
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 800;
             width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            border: none;
+            border-radius: 8px;
+            color: #0b0f19;
+            font-size: 12pt;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 15px;
         }
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.4);
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
-        .link {
-            text-align: center;
+        .flash-messages {
+            background-color: #742a2a;
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 10.5pt;
+            border: 1px solid #e53e3e;
+        }
+        .link-footer {
             margin-top: 25px;
-            font-size: 0.85rem;
-            color: #94a3b8;
+            font-size: 10pt;
+            color: #a0aec0;
         }
-        .link a {
-            color: var(--purple);
+        .link-footer a {
+            color: #00f2fe;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <div class="header">
-            <h1>SAMS SYSTEM</h1>
-            <p>Node Enrollment</p>
-        </div>
-        <div class="card">
-            <form action="/register" method="POST">
-                <div class="group">
-                    <label>Identity Username</label>
-                    <input type="text" name="username" required autocomplete="off">
-                </div>
-                <div class="group">
-                    <label>System Keypair Pass</label>
-                    <input type="password" name="password" required>
-                </div>
-                <div class="group">
-                    <label>Clearance Level</label>
-                    <select name="role" required>
-                        <option value="Admin">System Administrator</option>
-                        <option value="Manager">Security Manager</option>
-                        <option value="Staff">Operational Staff</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn">Provision Account</button>
-            </form>
-            <div class="link">
-                Already registered? <a href="/login">Identity Gate</a>
+        <h1>SAMS ENGINE</h1>
+        <p class="subtitle">Secure Administrative Messaging System</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-messages">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="username">Create Account Name</label>
+                <input type="text" id="username" name="username" required placeholder="Enter username">
             </div>
+            <div class="form-group">
+                <label for="password">Create Secure Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <div class="form-group">
+                <label for="role">System Access Role</label>
+                <select id="role" name="role">
+                    <option value="Staff">Staff Officer</option>
+                    <option value="Admin">System Administrator</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">CREATE ACCOUNT</button>
+        </form>
+
+        <div class="link-footer">
+            Already have an account? <a href="/">Verify & Login</a>
         </div>
     </div>
+
 </body>
 </html>
