@@ -5,10 +5,10 @@ from models import db, User, Message
 from cryptography_logic import encrypt_message, decrypt_message
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = b'SAMS_SECURE_RANDOM_KEY_2026'
 
-BASE_DIR = os.path.abspath(os.path.dirname(_file_))
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')
 
 if not os.path.exists(INSTANCE_DIR):
