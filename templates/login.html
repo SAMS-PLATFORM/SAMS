@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAMS | Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060913;
+            --card: rgba(15, 23, 42, 0.6);
+            --cyan: #00f2fe;
+            --purple: #7b2cbf;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at center, #0d1527 0%, var(--bg) 100%);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #f8fafc;
+        }
+        .container {
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(to right, var(--cyan), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .header p {
+            color: #64748b;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
+        .group {
+            margin-bottom: 20px;
+        }
+        .group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--cyan);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(5, 8, 16, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .group input:focus {
+            outline: none;
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+        }
+        .err {
+            background: rgba(244, 63, 94, 0.1);
+            color: #fb7185;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(244, 63, 94, 0.2);
+        }
+        .btn {
+            background: linear-gradient(90deg, var(--cyan), #4facfe);
+            color: #060913;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 800;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.4);
+        }
+        .link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .link a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SAMS SECURE</h1>
+            <p>Authentication Gate</p>
+        </div>
+        <div class="card">
+            {% if request.args.get('error') %}
+            <div class="err">ACCESS DENIED: Invalid Credentials</div>
+            {% endif %}
+            <form action="/login" method="POST">
+                <div class="group">
+                    <label>Terminal Username</label>
+                    <input type="text" name="username" required autocomplete="off">
+                </div>
+                <div class="group">
+                    <label>Security Passkey</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Authorize Access</button>
+            </form>
+            <div class="link">
+                No Access Account? <a href="/register">Create Node</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
