@@ -3,7 +3,7 @@ from models import db, User, Message
 from cryptography_logic import encrypt_message, generate_hash
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SAMS_CYBER_SECURE_TOKEN_2026'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/sams.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -92,5 +92,5 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(debug=True)
