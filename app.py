@@ -14,10 +14,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(50), default='Operational Officer')
+    id = db.column(db.Integer, primary_key=True)
+    username = db.column(db.String(50), unique=True, nullable=False)
+    password = db.column(db.String(255), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -26,17 +25,11 @@ def load_user(user_id):
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username').strip()
-        password = request.form.get('password')
-        role = request.form.get('role')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
         
         user = User.query.filter_by(username=username).first()
-        
         if user and check_password_hash(user.password, password):
-            if user.role != role:
-                flash('Access Denied: Role mismatch for this node!', 'danger')
-                return redirect(url_for('login'))
-                
             login_user(user)
             return redirect(url_for('dashboard'))
         else:
@@ -48,17 +41,16 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username').strip()
-        password = request.form.get('password')
-        role = request.form.get('role', 'Operational Officer')
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
         
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            flash('Username already exists! Please choose another one.', 'danger')
+            flash('Username already exists!', 'danger')
             return redirect(url_for('register'))
         
         hashed_pw = generate_password_hash(password, method='pbkdf2:sha256')
-        new_user = User(username=username, password=hashed_pw, role=role)
+        new_user = User(username=username, password=hashed_pw)
         
         db.session.add(new_user)
         db.session.commit()
@@ -85,7 +77,6 @@ def dashboard():
             
     return render_template('index.html', 
                            username=current_user.username, 
-                           role=current_user.role,
                            original_text=original_text,
                            encrypted_text=encrypted_text,
                            target_authority=target_authority)
