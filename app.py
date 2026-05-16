@@ -2,17 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
-
-try:
-    from cryptography_logic import encrypt_message, generate_hash
-except ImportError:
-    import base64
-    import hashlib
-    def encrypt_message(text):
-        return base64.b64encode(text.encode('utf-8')).decode('utf-8')
-    def generate_hash(text):
-        return hashlib.sha256(text.encode('utf-8')).hexdigest()
+import base64
+import hashlib
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SAMS_SUPER_SECRET_KEY_2026'
@@ -93,8 +84,8 @@ def dashboard():
         target_authority = request.form.get('target_authority', 'Dean')
         
         if original_text:
-            encrypted_text = encrypt_message(original_text)
-            msg_hash = generate_hash(original_text)
+            encrypted_text = base64.b64encode(original_text.encode('utf-8')).decode('utf-8')
+            msg_hash = hashlib.sha256(original_text.encode('utf-8')).hexdigest()
             
             new_log = MessageLog(
                 sender_role=sender_role,
