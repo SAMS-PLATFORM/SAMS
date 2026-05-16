@@ -5,10 +5,10 @@ from models import db, User, Message
 from cryptography_logic import encrypt_message, decrypt_message
 import os
 
-app = Flask(__name__)
+app = Flask(_name_)
 app.config['SECRET_KEY'] = b'SAMS_SECURE_RANDOM_KEY_2026'
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+BASE_DIR = os.path.abspath(os.path.dirname(_file_))
 INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')
 
 if not os.path.exists(INSTANCE_DIR):
@@ -24,6 +24,21 @@ login_manager.login_view = 'login'
 
 with app.app_context():
     db.create_all()
+    
+    roles = [
+        "Chief Information Security Officer (CISO)",
+        "Director of Cyber Intelligence",
+        "Security Operations Center (SOC) Chief",
+        "Lead Cryptographic Administrator"
+    ]
+    
+    for role_name in roles:
+        existing_user = User.query.filter_by(username=role_name).first()
+        if not existing_user:
+            hashed_pw = bcrypt.generate_password_hash("123456").decode('utf-8')
+            new_role = User(username=role_name, password_hash=hashed_pw)
+            db.session.add(new_role)
+    db.session.commit()
 
 @login_manager.user_loader
 def load_user(user_id):
