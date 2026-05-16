@@ -5,12 +5,13 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SAMS_CYBER_SECURE_TOKEN_2026'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/sams.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sams.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 @app.route('/')
@@ -81,6 +82,7 @@ def send():
             sender=session['username'],
             receiver=receiver,
             ciphertext=encrypt_message(content),
+            decrypted_text=content,
             fingerprint=generate_hash(content)
         )
         db.session.add(new_msg)
